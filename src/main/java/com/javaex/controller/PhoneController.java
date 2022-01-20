@@ -1,12 +1,12 @@
 package com.javaex.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,12 +21,30 @@ public class PhoneController {
 	//필드
 	@Autowired
 	private PhoneDao phoneDao;  //저장에놓았던거 필드에 올려놓고 쓰기 
-	
+	private PersonVo personVo;
 	//생성자
 	
 	//메소드 gs
-	
+
 	//메소드 일반
+	
+	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
+	public String list(Model model) {
+		System.out.println("PhoneController>list()");
+		
+		//다오에서 리스트를 가져온다
+		//PhoneDao phoneDao = new PhoneDao();
+		List<PersonVo> personList = phoneDao.getPersonList();
+		System.out.println(personList.toString());
+		
+		//컨트롤러-->DS데이터를 보낸다 (model)
+		model.addAttribute("personList", personList);
+		
+		//jsp정보를 리턴한다(view)
+		return "list";
+	}
+	
+	
 	@RequestMapping(value="/writeForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String writeForm() {
 		System.out.println("PhoneController>writeFrom()");
@@ -36,11 +54,10 @@ public class PhoneController {
 	}
 	
 	
-	
 	@RequestMapping(value="/write", method= {RequestMethod.GET, RequestMethod.POST} )
 	public String write(@ModelAttribute PersonVo personVo) {
 		System.out.println("PhoneController>write()");
-		System.out.println(personVo);
+		//System.out.println(personVo);
 		
 		//저장
 		phoneDao.personInsert(personVo);
@@ -49,6 +66,36 @@ public class PhoneController {
 		return "redirect:/phone/list";
 	}
 	
+	
+	@RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST} )
+	public String delete(@RequestParam("personId") int personId) {
+		System.out.println("PhoneController>delete()");
+		
+		//삭제
+		phoneDao.personDelete(personId);
+		
+		return "redirect:/phone/list";
+	}
+	
+	@RequestMapping(value="/update", method= {RequestMethod.GET, RequestMethod.POST} )
+	public String update(@ModelAttribute PersonVo personVo) {
+		System.out.println("PhoneController>update()");
+		
+		phoneDao.personInsert(personVo);
+		
+		return "redirect:/phone/list";
+	}
+	
+	@RequestMapping(value="/updateForm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String updateForm(@RequestParam("personId") int personId, Model model) {
+		System.out.println("PhoneController>updateFrom()");
+		
+		personVo = phoneDao.getPerson(personId);
+		
+		model.addAttribute("personVo", personVo);
+		
+		return "updateForm";
+	}
 	
 	
 	/*
@@ -74,23 +121,8 @@ public class PhoneController {
 	}
 	*/
 	
-	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
-	public String list(Model model) {
-		System.out.println("PhoneController>list()");
-		
-		//다오에서 리스트를 가져온다
-		//PhoneDao phoneDao = new PhoneDao();
-		List<PersonVo> personList = phoneDao.getPersonList();
-		System.out.println(personList.toString());
-		
-		//컨트롤러-->DS데이터를 보낸다 (model)
-		model.addAttribute("personList", personList);
-		
-		//jsp정보를 리턴한다(view)
-		return "list";
-	}
 	
-	
+	/*
 	@RequestMapping(value="/test", method = {RequestMethod.GET, RequestMethod.POST})
 	public String test(@RequestParam(value="n") String name,
 			           @RequestParam(value="age", required =false, defaultValue = "-1" ) int age ) {
@@ -134,7 +166,7 @@ public class PhoneController {
 		
 		return "writeForm";
 	}
-	
+	*/
 	
 	
 

@@ -1,70 +1,58 @@
 package com.javaex.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.PersonVo;
 
 @Repository
-public class PhoneDao {
+public class PhoneDao2 {
 	
 		@Autowired
-		private SqlSession sqlSession;
+		DataSource dataSource;
 
-		//전체 리스트 가져오기 
-		public List<PersonVo> getPersonList(){
-			System.out.println("PhoneDao.getPersonList()");
-			
-			List<PersonVo> personList = sqlSession.selectList("phonebook.selectList");
-			System.out.println(personList);
-			
-			return personList;			
-		}
-		
-		//전화번호 추가(저장)
-		public int personInsert(PersonVo personVo) {
-			System.out.println("PhoneDao.personInsert()");
-			int count = sqlSession.insert("phonebook.insert",personVo); //여기서 던져준 personVo가 폰북xml에 파라미터값 
-			//int count =blahblah 에서 int count 대신 return count; 없애고 그 자리에 바로 return
-			
-			System.out.println(count +"건 저장");
-			return count;
-		}
-		
-		// 사람 삭제
-		public int personDelete(int personId) {
-			System.out.println("PhoneDao.personDelete()");
-				
-			int count = sqlSession.delete("phonebook.delete",personId);
-			
-			System.out.println(count +"건 삭제");
-			return count;
-		}
+		// 0. import java.sql.*;
+		private Connection conn = null;
+		private PreparedStatement pstmt = null;
+		private ResultSet rs = null;
 	
 		
-		// 사람 수정
-		public int personUpdate(PersonVo personVo) {
-			System.out.println("PhoneDao.personUpdate()");
-	
-			int count = sqlSession.update("phonebook.update",personVo);
-			return count;
-		}
-		
-		//사람 한 명 가져오기 
-		public PersonVo getPerson(int personId) {
-			System.out.println("PhoneDao.getPerson()");
-			
-			PersonVo personVo = sqlSession.selectOne("phonebook.updateForm",personId);
-			System.out.println(personVo);
-			return personVo;
+		private void getConnection() {
+			try {
+				// 2. Connection 얻어오기
+				conn = dataSource.getConnection();
+				// System.out.println("접속성공");
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
 		}
 	
-		
-		
-		/*
+		public void close() {
+			// 5. 자원정리
+			try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+	
 		// 사람 추가
 		public int personInsert(PersonVo personVo) {
 			int count = 0;
@@ -259,6 +247,6 @@ public class PhoneDao {
 		
 				close();
 				return count;
-		}*/
+		}
 
 }

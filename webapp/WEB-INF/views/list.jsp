@@ -32,11 +32,15 @@
 								<td>회사(company)</td>
 								<td>${personVo.company}</td>
 						</tr>
+						<tr>
+								<td><a href="/phonebook4/phone/updateForm?personId=${personVo.personId}">[수정]</a></td>
+								<td><a href="/phonebook4/phone/delete?personId=${personVo.personId}">[삭제]</a></td>
+						</tr>
 				</table>
 			<br>
 		</c:forEach>
 		
-		<a href="">번호등록</a>
+		<a href="/phonebook4/phone/writeForm">번호등록</a>
 		
 		
 
