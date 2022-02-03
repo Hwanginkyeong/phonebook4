@@ -47,7 +47,7 @@ public class PhoneController {
 	
 	@RequestMapping(value="/writeForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String writeForm() {
-		System.out.println("PhoneController>writeFrom()");
+		System.out.println("PhoneController>writeForm()");
 		
 		
 		return "writeForm";
@@ -88,7 +88,7 @@ public class PhoneController {
 	
 	@RequestMapping(value="/updateForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String updateForm(@RequestParam("personId") int personId, Model model) {
-		System.out.println("PhoneController>updateFrom()");
+		System.out.println("PhoneController>updateForm()");
 		
 		personVo = phoneDao.getPerson(personId);
 		

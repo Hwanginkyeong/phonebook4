@@ -16,6 +16,8 @@
 	</select>
 	
 	
+	
+	
 	<!-- 전화번호 추가 -->
 	<insert id="insert" parameterType="com.javaex.vo.PersonVo"> <!-- resultType없으면 안써도 됨 받아야하면 한덩어리의 파라미터 타입 적기  -->
 		<![CDATA[

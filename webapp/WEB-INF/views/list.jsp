@@ -15,7 +15,7 @@
 		
 		<h2>전화번호 리스트</h2>
 		
-		<p>입력한 정보 내역입니다.</p> 
+		<p>입력한 정보 내역 리스트입니다.</p> 
 		
 		
 		<c:forEach items="${personList}" var="personVo">
@@ -25,7 +25,7 @@
 								<td>${personVo.name}</td>
 						</tr>
 						<tr>
-								<td>핸드폰(hp)</td>
+								<td>휴대폰(hp)</td>
 								<td>${personVo.hp}</td>
 						</tr>
 						<tr>
